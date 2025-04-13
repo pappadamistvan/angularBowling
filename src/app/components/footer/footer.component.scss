@@ -1,0 +1,27 @@
+button {
+  border: 0px;
+}
+
+.footer {
+      background-color: var(--mat-sys-primary);
+      color: white;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    
+      .footer-content {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+    
+      .social-icons {
+        display: flex;
+        gap: 10px;
+      }
+    }
+    

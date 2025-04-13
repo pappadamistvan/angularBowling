@@ -1,0 +1,32 @@
+<div class="nav">
+      <mat-sidenav #sidenav>
+            <app-sidenav [sidenav]="sidenav" [isLoggedIn]="isLoggedIn"></app-sidenav>
+          </mat-sidenav>
+          <mat-sidenav-content>
+            <mat-toolbar class="nav">
+              <i class="pic bx bx-bowling-ball"></i>
+              <span>StrikeTime</span>
+        
+              <div class="spacer"></div>
+        
+              <!-- Fullscreen -->
+              <div class="nav-links">
+                <a mat-flat-button routerLink="home">Kezdőlap</a>
+                <a mat-flat-button routerLink="reservation">Foglalás</a>
+                <a mat-flat-button routerLink="about">Rólunk</a>
+                @if (isLoggedIn){
+                  <a mat-flat-button routerLink="profile">Profil</a>
+                  <a mat-raised-button (click)="logOut()">Kijelentkezés</a>
+                }
+                @if (!isLoggedIn){
+                  <a mat-raised-button routerLink="login" class="loginBtn">Bejelentkezés</a>
+                }
+              </div>
+        
+              <!-- Hamburger menu -->
+              <button mat-icon-button (click)="onToggleSidenav()" class="menu-button">
+                <mat-icon>menu</mat-icon>
+              </button>
+            </mat-toolbar>
+          </mat-sidenav-content>
+</div>

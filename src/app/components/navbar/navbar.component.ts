@@ -1,42 +1,43 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { CommonModule } from '@angular/common';
-import { FooterComponent } from './components/footer/footer.component';
-import { NavbarComponent } from "./components/navbar/navbar.component";
+import { RouterLink } from '@angular/router';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  standalone: true,
   imports: [
-    RouterOutlet,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    CommonModule,
-    NavbarComponent,
-    FooterComponent
-],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    SidenavComponent,
+    RouterLink]
 })
-export class AppComponent implements OnInit {
+export class NavbarComponent implements OnInit{
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  title = 'bowling';
   isLoggedIn = false;
 
   ngOnInit(): void {
     this.checkLoginStatus();
   }
 
-  checkLoginStatus(): void {
+  checkLoginStatus() {
     this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   }
+  
+  logOut(): void {
+    localStorage.setItem('isLoggedIn', 'false');
+    this.isLoggedIn = false;
+    window.location.href = "/home";
+}
 
   onToggleSidenav() {
     this.sidenav.toggle();

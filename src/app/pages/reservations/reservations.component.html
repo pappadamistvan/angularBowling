@@ -1,0 +1,103 @@
+  <body>
+    @if (isLoading) {
+      <div class="loading">
+        <h1>Köszönjük szépen a foglalást!</h1>
+        <h4>Visszairányítás a főoldalra...</h4>
+      </div>
+    }
+    @if(!isLoading) {
+      <div class="main">
+        <mat-stepper #stepper class="stepper" [orientation]="(stepperOrientation | async)!">
+          <!-- 1. lépés: Pálya -->
+          <mat-step [stepControl]="trackFormGroup">
+            <form [formGroup]="trackFormGroup">
+              <ng-template matStepLabel class="step-label">Válassz pályát</ng-template>
+      
+              <!-- Pálya kiválasztó komponens -->
+              <div class="fields">
+                <app-track-selector (trackSelected)="onTrackSelect($event)"></app-track-selector>
+              </div>
+              
+              <div class="buttons">
+                <button mat-button matStepperNext [disabled]="!trackFormGroup.valid">Következő</button>
+              </div>
+            </form>
+          </mat-step>
+      
+          <!-- 2. lépés: Nap + Időpont -->
+          <mat-step [stepControl]="dateTimeFormGroup">
+            <form [formGroup]="dateTimeFormGroup">
+              <ng-template matStepLabel class="step-label">Nap és időpont</ng-template>
+      
+              
+              <h3>Kiválasztott pálya: {{ selectedTrack }}</h3> 
+              <!-- Nap kiválasztása -->
+              <div class="fields">
+                <mat-form-field appearance="fill">
+                  <mat-label>Nap</mat-label>
+                  <mat-select formControlName="dateCtrl" required>
+                    @for (day of days; track day) {
+                      <mat-option [value]="day">{{ day | datePipe }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+        
+                <!-- Időpont kiválasztása -->
+                <mat-form-field appearance="fill">
+                  <mat-label>Időpont</mat-label>
+                  <mat-select formControlName="timeCtrl" required>
+                    @for (hour of hours; track hour) {
+                      <mat-option [value]="hour">{{ hour }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+      
+              <div class="buttons">
+                <button mat-button matStepperPrevious>Vissza</button>
+      
+                @if (isLoggedIn) {
+                  <button mat-button [disabled]="!isEveryStepValid()" (click)="reservation()">Foglalás</button>
+                }
+                @if (!isLoggedIn) {
+                  <button mat-button matStepperNext [disabled]="!dateTimeFormGroup.valid">Következő</button>
+                }
+              </div>
+            </form>
+          </mat-step>
+      
+          <!-- 3. lépés: Csak ha nincs bejelentkezve -->
+          @if(!isLoggedIn) {
+            <mat-step [stepControl]="userDataFormGroup">
+              <form [formGroup]="userDataFormGroup">
+                <ng-template matStepLabel class="step-label">Adatok megadása</ng-template>
+        
+                <div class="name-fields">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Vezetéknév</mat-label>
+                    <input matInput formControlName="lastNameCtrl" required />
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="fill">
+                    <mat-label>Keresztnév</mat-label>
+                    <input matInput formControlName="firstNameCtrl" required />
+                  </mat-form-field>
+                </div>
+                <div class="row-field">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="emailCtrl" type="email" required class="email-input" />
+                  </mat-form-field>
+                </div>
+        
+                <div class="buttons">
+                  <button mat-button matStepperPrevious>Vissza</button>
+                  <button mat-button [disabled]="!isEveryStepValid()" (click) = "reservation()">Foglalás</button>
+                </div>
+              </form>
+            </mat-step>
+          }
+          </mat-stepper>
+      </div>
+    }
+  </body>

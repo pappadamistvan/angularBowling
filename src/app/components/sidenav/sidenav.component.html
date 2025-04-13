@@ -1,0 +1,30 @@
+<mat-nav-list>
+      <a mat-list-item routerLink="home" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Kezdőlap</span>
+      </a>
+      <a mat-list-item routerLink="reservation" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <mat-icon matListItemIcon>book_online</mat-icon>
+        <span matListItemTitle>Foglalás</span>
+      </a>
+      <a mat-list-item routerLink="about" routerLinkActive="active-list-item" (click)="closeMenu()">
+        <mat-icon matListItemIcon>groups_3</mat-icon>
+        <span matListItemTitle>Rólunk</span>
+      </a>
+      @if (!isLoggedIn){
+        <a mat-list-item routerLink="login" routerLinkActive="active-list-item" (click)="closeMenu()">
+          <mat-icon matListItemIcon>login</mat-icon>
+          <span matListItemTitle>Bejelentkezés</span>
+        </a>
+      }
+      @if (isLoggedIn){
+        <a mat-list-item routerLink="profile" routerLinkActive="active-list-item" (click)="closeMenu()">
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>Profil</span>
+        </a>
+        <a mat-list-item routerLink="logout" routerLinkActive="active-list-item" (click)="closeMenu(); logOut()">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Kijelentkezés</span>
+        </a>
+      }
+</mat-nav-list>

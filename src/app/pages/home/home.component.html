@@ -1,0 +1,24 @@
+<body>
+      <div class="texts">
+            <h1>A legjobb minőségű bowling élmény csak rád vár!</h1>
+            <hr>
+      </div>
+      <div class="card-container">
+            @if(!isLoggedIn) {
+                  <mat-card appearance="outlined">
+                        <mat-card-content>
+                              <h2>Nincs még fiókod?</h2>
+                              <h3>Regisztrálj, hogy minél hamarabb részese legyél életed legjobb bowling élményének!</h3>
+                              <a mat-raised-button routerLink="registration" class="registrationBtn">Regisztrálj!</a>
+                        </mat-card-content>
+                  </mat-card>
+            }
+            <mat-card appearance="outlined">
+                  <mat-card-content>
+                        <h2>Készen állsz a foglalásra?</h2>
+                        <h3>Ne habozz, találd meg a számodra legalkalmasabb időpontot!</h3>
+                        <a mat-raised-button routerLink="reservation" class="registrationBtn">Foglalok!</a>
+                  </mat-card-content>
+            </mat-card>
+      </div>
+</body>

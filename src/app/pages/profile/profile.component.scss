@@ -1,0 +1,65 @@
+body {
+      padding-top: 50px;
+      padding-bottom: 50px;
+      min-height: fit-content;
+      position: relative;
+      height: 83.6vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+}
+
+body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/bowlingtrack5.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: brightness(0.5);
+      z-index: -1;
+      background-attachment: fixed;
+}
+
+.profile-div {
+      margin: auto;
+      padding-bottom: 20px;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+      border-radius: 25px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+table {
+      width: 100%;
+}
+
+td {
+      width: 50%;
+      padding: 10px;
+}
+
+h1 {
+      text-align: center;
+      padding-top: 30px;
+      padding-bottom: 30px;
+}
+
+.first-column {
+      font-weight: bold;
+      text-align: right;
+      border-right: 1px solid black;
+}
+
+.second-column {
+      text-align: left;
+      border-left: 1px solid black;
+}
