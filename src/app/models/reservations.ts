@@ -1,7 +1,10 @@
-import { Tracks } from "./tracks";
-import { User } from "./user";
+import { Timestamp } from '@angular/fire/firestore';
 
-export interface Reservations {
-      date: Date;
-      track: Tracks
+export interface Reservation {
+  id?: string;
+  userId: string;
+  name: string;
+  track: string;
+  date: string
+  isEditable?: boolean;
 }

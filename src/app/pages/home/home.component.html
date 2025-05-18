@@ -1,24 +1,41 @@
-<body>
-      <div class="texts">
-            <h1>A legjobb minőségű bowling élmény csak rád vár!</h1>
-            <hr>
+<div class="main-container">
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="main-title">A legjobb minőségű bowling élmény csak rád vár!</h1>
+      <div class="divider">
+        <span class="divider-icon">🎳</span>
       </div>
-      <div class="card-container">
-            @if(!isLoggedIn) {
-                  <mat-card appearance="outlined">
-                        <mat-card-content>
-                              <h2>Nincs még fiókod?</h2>
-                              <h3>Regisztrálj, hogy minél hamarabb részese legyél életed legjobb bowling élményének!</h3>
-                              <a mat-raised-button routerLink="registration" class="registrationBtn">Regisztrálj!</a>
-                        </mat-card-content>
-                  </mat-card>
-            }
-            <mat-card appearance="outlined">
-                  <mat-card-content>
-                        <h2>Készen állsz a foglalásra?</h2>
-                        <h3>Ne habozz, találd meg a számodra legalkalmasabb időpontot!</h3>
-                        <a mat-raised-button routerLink="reservation" class="registrationBtn">Foglalok!</a>
-                  </mat-card-content>
-            </mat-card>
-      </div>
-</body>
+    </div>
+  </div>
+
+  <div class="card-container">
+    @if(!isLoggedIn) {
+      <mat-card appearance="outlined" class="action-card register-card">
+        <mat-card-content>
+          <div class="card-icon">
+            <mat-icon>person_add</mat-icon>
+          </div>
+          <h2>Nincs még fiókod?</h2>
+          <h3>Regisztrálj, hogy minél hamarabb részese legyél életed legjobb bowling élményének!</h3>
+          <a mat-raised-button color="primary" routerLink="registration" class="action-button">
+            <mat-icon>how_to_reg</mat-icon>
+            Regisztrálj most!
+          </a>
+        </mat-card-content>
+      </mat-card>
+    }
+    <mat-card appearance="outlined" class="action-card booking-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>event_available</mat-icon>
+        </div>
+        <h2>Készen állsz a foglalásra?</h2>
+        <h3>Ne habozz, találd meg a számodra legalkalmasabb időpontot!</h3>
+        <a mat-raised-button color="accent" routerLink="reservation" class="action-button">
+          <mat-icon>calendar_today</mat-icon>
+          Foglalok most!
+        </a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

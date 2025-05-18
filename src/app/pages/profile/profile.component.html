@@ -1,19 +1,73 @@
 <body>
-      <div class="profile-div">
-            <h1>Profil</h1>
-            <table>
-                  <tr>
-                        <td class="first-column">Név</td>
-                        <td class="second-column">{{ firstName }} {{ lastName }}</td>
+  <div class="profile-div">
+    <h1>Profil</h1>
+    <table>
+      <tr>
+        <td class="first-column">Név</td>
+        <td class="second-column">{{ lastName }} {{ firstName }}</td>
+      </tr>
+      <tr>
+        <td class="first-column">Email-cím</td>
+        <td class="second-column">{{ email }}</td>
+      </tr>
+    </table>
+
+    <div class="reservations-section">
+      <h2>Foglalásaim</h2>
+
+      @if (reservations.length === 0) {
+        <div class="no-reservations">Jelenleg nincs aktív foglalásod.</div>
+      }
+
+      @if (reservations.length > 0) {
+        <div class="reservations-list">
+          <table class="reservations-table">
+            <thead>
+              <tr>
+                <th>Dátum</th>
+                <th>Pálya</th>
+                <th>Név</th>
+                <th>Művelet</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (reservation of reservations; track reservation) {
+                <tr [class.highlighted-row]="editReservationId === reservation.id">
+                  <td>{{ formatDate(reservation.date) }}</td>
+                  <td>{{ reservation.track }}</td>
+                  <td>{{ reservation.name }}</td>
+                  <td>
+                    <button class="delete-btn" (click)="deleteReservation(reservation.id)">Törlés</button>
+
+                    @if (reservation.isEditable) {
+                      <button class="edit-btn" (click)="editReservationId = reservation.id!">Módosítás</button>
+                    }
+                  </td>
+                </tr>
+
+                @if (editReservationId === reservation.id) {
+                  <tr class="edit-row">
+                    <td colspan="4">
+                      <div class="edit-form">
+                        <form [formGroup]="editForms[reservation.id!]" (ngSubmit)="updateReservation(reservation.id!)">
+                          <div class="form-group">
+                            <label for="newDate">Új időpont:</label>
+                            <input type="datetime-local" id="newDate" formControlName="newDate" class="date-input">
+                          </div>
+                          <div class="form-buttons">
+                            <button type="submit" class="save-btn">Mentés</button>
+                            <button type="button" class="cancel-btn" (click)="editReservationId = null">Mégse</button>
+                          </div>
+                        </form>
+                      </div>
+                    </td>
                   </tr>
-                  <tr>
-                        <td class="first-column">Email-cím</td>
-                        <td class="second-column">{{ email }}</td>
-                  </tr>
-                  <tr>
-                        <td class="first-column">Jelszó</td>
-                        <td class="second-column">{{ password }}</td>
-                  </tr>
-            </table>
-      </div>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
 </body>

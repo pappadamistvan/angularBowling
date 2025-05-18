@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
+import { AuthService } from '../../services/auth.service';
+
 
 
 @Component({
@@ -38,10 +40,14 @@ export class RegistrationComponent {
   registrationError: string = '';
   isLoggedIn = false;
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
 
   registration(): void {
+    console.log(this.registrationForm.value);
     if (this.registrationForm.invalid){
       this.registrationError = 'Hibás input!'
       return;
@@ -57,9 +63,8 @@ export class RegistrationComponent {
 
     this.isLoading = true;
     this.showForm = false;
-    this.isLoggedIn = true;
 
-    const newUser: User = {
+    const userData: Partial<User> = {
       name: {
         firstName: this.registrationForm.value.name?.firstName || '',
         lastName: this.registrationForm.value.name?.lastName || ''
@@ -67,10 +72,36 @@ export class RegistrationComponent {
       email: this.registrationForm.value.email || '',
       password: this.registrationForm.value.password || '',
       reservations: []
-    }
+    };
 
-    localStorage.setItem(newUser.email, newUser.email + ':' + newUser.password + ':' + newUser.name.firstName + ':' + newUser.name.lastName);
-    localStorage.setItem('currentUser', newUser.email + ':' + newUser.password + ':' + newUser.name.firstName + ':' + newUser.name.lastName);
+    const email = this.registrationForm.value.email || '';
+    const pw = this.registrationForm.value.password || '';
+
+    this.authService.signUp(email, pw, userData)
+    .then(userCredential => {
+      console.log('Registration successful:', userCredential.user);
+      this.authService.updateLoginStatus(true);
+      this.router.navigateByUrl("/home");
+    })
+    .catch (error => {
+      console.error('Regisztrációs hiba: ', error);
+      this.isLoading = false;
+      this.showForm = true;
+
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          this.registrationError = 'Ezzel az e-mail címmel már van létrehozva fiók!';
+          break;
+        case 'auth/invalid-email':
+          this.registrationError = 'Hibás e-mail cím formátum!';
+          break;
+        case 'auth/weak-password':
+          this.registrationError = 'Gyenge jelszó - legalább 6 karakter hosszú legyen!';
+          break;
+        default:
+          this.registrationError = 'Hiba a regisztráció során. Próbáld újra később!';
+      }
+    })
 
     setTimeout(() => {
       this.router.navigateByUrl("/home");

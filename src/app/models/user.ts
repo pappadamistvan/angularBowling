@@ -1,11 +1,12 @@
-import { Reservations } from "./reservations";
+import { Reservation } from "./reservations";
 
 export interface User {
+      id: string;
       name: {
             firstName: string;
             lastName: string;
       };
       email: string;
       password: string;
-      reservations: Reservations[];
+      reservations: Reservation[];
 }

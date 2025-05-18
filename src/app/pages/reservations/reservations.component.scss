@@ -1,7 +1,7 @@
 body {
       min-height: fit-content;
       position: relative;
-      height: 83.6vh;
+      height: 90vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -25,10 +25,19 @@ body::before {
 }
 
 .stepper {
-      width: 80%;
+      width: 60%;
       margin: auto;
       border-radius: 25px;
       box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.loading {
+      width: 60%;
+      margin: auto;
+      border-radius: 25px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      padding-bottom: 50px
 }
 
 .main {
@@ -91,5 +100,11 @@ h3 {
 @media (max-width: 920px) {
       .name-fields {
             flex-direction: column;
+      }
+}
+
+@media (max-width: 770px) {
+      h1 {
+            font-size: large;
       }
 }

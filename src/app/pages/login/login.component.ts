@@ -1,11 +1,14 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +25,7 @@ import { UserService } from '../../services/user.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy{
   email = new FormControl('');
   password = new FormControl('');
   firstName: string = '';
@@ -30,50 +33,45 @@ export class LoginComponent {
   isLoading: boolean = false;
   loginError: string = '';
   showLoginForm: boolean = true;
+  authSubscription?: Subscription;
 
   usernameOut: string = '';
   emailOut: string = '';
   passwordOut: string = '';
 
-  constructor(private userService: UserService){}
+  constructor(private authService: AuthService, private router: Router){}
 
 
   login(){
-    const enteredEmail = this.email.value;
-    const enteredPassword = this.password.value;
-    let isAunthenticated = false;
+    const enteredEmail = this.email.value || '';
+    const enteredPassword = this.password.value || '';
     this.loginError = '';
 
-    for (let i = 0; i < localStorage.length; i++){
-      const key = localStorage.key(i);
-      if (key){
-        const storedPassword = localStorage.getItem(key)?.split(':')[1];
-        this.firstName = localStorage.getItem(key)?.split(':')[2] || '';
-        this.lastName = localStorage.getItem(key)?.split(':')[3] || '';
-        if (key === enteredEmail){
-          if (storedPassword === enteredPassword){
-            isAunthenticated = true;
-            break;
-          }
-        }
+    this.authService.signIn(enteredEmail, enteredPassword).then(userCredential => {
+      console.log('Login successful: ', userCredential.user);
+      this.authService.updateLoginStatus(true);
+      this.router.navigateByUrl('/home');
+    })
+    .catch(error => {
+      console.log('Error: ', error);
+      this.isLoading = false;
+      this.showLoginForm = true;
+
+      switch(error.code){
+        case 'auth/user-not-found':
+          this.loginError = "E-mail cím nincs regisztrálva!";
+          break;
+        case 'auth/wrong-password':
+          this.loginError = "Hibás jelszó!";
+          break;
+        default:
+          this.loginError = "Hibás belépés. Próbáld újra!"
       }
-    }
+    });
+  }
 
-    if (!isAunthenticated){
-      this.loginError = 'Hibás felhasználónév vagy jelszó!';
-    }
-
-    if (isAunthenticated){
-      this.isLoading = true;
-      this.showLoginForm = false;
-
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', enteredEmail + ':' + enteredPassword + ':' + this.firstName + ':' + this.lastName);
-
-      setTimeout(() => {
-        window.location.href = '/home';
-      }, 3000);
-    }
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
   }
 }
 
